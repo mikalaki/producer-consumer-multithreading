@@ -3,14 +3,16 @@
  *
  *	Title	: Demo Producer/Consumer.
  *
- *	Short	: A solution to the producer consumer problem using
- *		pthreads.
+ *	Short	: Modify a	pthreads  solution to the producer consumer problem using
+ *  multiple consumer and producers threads, and using functions thread functions as
+ *  queue elemnts.
+ *	.
  *
  *	Long 	:
  *
- *	Author	: Andrae Muys
+ *	Author	: Michael Karatzas
  *
- *	Date	: 18 September 1997
+ *	Date	: 20 March 2020
  *
  *	Revised	:
  */
@@ -21,7 +23,9 @@
 #include <stdlib.h>
 //testing
 #define QUEUESIZE 5
-#define LOOP 5
+#define LOOP 2
+#define P 4
+#define Q 4
 
 struct workFunction {
   void * (*work)(void *);
@@ -54,17 +58,25 @@ void queueExec (queue *q);
 int main ()
 {
   queue *fifo; //queue declaration
-  pthread_t pro, con; //threads declaration
+  pthread_t producers[P], consumers[Q];//threads declaration
 
   fifo = queueInit (); //queue initialization
   if (fifo ==  NULL) {
     fprintf (stderr, "main: Queue Init failed.\n");
     exit (1);
   }
-  pthread_create (&pro, NULL, producer, fifo);
-  pthread_create (&con, NULL, consumer, fifo);
-  pthread_join (pro, NULL);
-  pthread_join (con, NULL);
+  /* We first spawn the consumer threads, in order to be able to execute functions
+  as soon as queue is not empty , with the help of conds and mutexes*/
+  for (size_t i = 0; i < Q; i++)
+    pthread_create (&consumers[i], NULL, consumer, fifo);
+  for (size_t i = 0; i < P; i++)
+    pthread_create (&producers[i], NULL, producer, fifo);
+
+  for (size_t i = 0; i < Q; i++)
+    pthread_join (consumers[i], NULL);
+  for (size_t i = 0; i < P; i++)
+    pthread_join (producers[i], NULL);
+
   queueDelete (fifo);
 
   return 0;
