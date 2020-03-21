@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #define QUEUESIZE 5
 #define LOOP 1000
@@ -22,10 +23,13 @@
 #define P 1
 #define Q 1
 
+//Given struct for defining the
 struct workFunction {
   void * (*work)(void *);
   void * arg;
 };
+
+
 
 //Threads functions declaration.
 void *producer (void *args);
@@ -46,13 +50,16 @@ int arguments[10]={ 0    , 10   , 25   , 30 ,45  ,
                     60   , 75   , 90   ,100 ,120 };
 
 
+//An array to store temporary time data, helpful for the computation of the waiting time.
+struct timespec startTimes[QUEUESIZE] ;
+
 
 //Struct defined for the queue implementation
 typedef struct {
   struct workFunction buf[QUEUESIZE];
   long head, tail;
   int full, empty;
-  pthread_mutex_t *mut;
+  pthread_mutex_t *mut, * globalsLock;
   pthread_cond_t *notFull, *notEmpty;
 } queue;
 
@@ -62,6 +69,10 @@ void queueDelete (queue *q);
 
 void queueAdd (queue *q, struct workFunction in);
 void queueExec (queue *q);
+
+//variable that holds the number of fuction execution by a consumer
+long functionsCounter;
+double meanWaitingTime;
 
 int main ()
 {
@@ -73,6 +84,11 @@ int main ()
     // fprintf (stderr, "main: Queue Init failed.\n");
     exit (1);
   }
+
+  //Initializing the two global variables for the mean waiting time calculations equal to zero.
+  functionsCounter=0;
+  meanWaitingTime=0;
+
   /* We first spawn the consumer threads, in order to be able to execute functions
   as soon as queue is not empty , with the help of conds and mutexes*/
   for (size_t i = 0; i < Q; i++)
@@ -114,9 +130,12 @@ void *producer (void *q)
 
     func.work = functions[funcIndex];
     func.arg = (void *) arguments[argIndex];
+    // THE BEGINNING of the WAITING TIME
 
     //the function that adds a test function in the queue
     queueAdd (fifo, func);
+    // THE BEGINNING of the WAITING TIME
+    gettimeofday(startTimes+(fifo->tail),NULL);
 
     pthread_mutex_unlock (fifo->mut); //unlocking
     pthread_cond_signal (fifo->notEmpty); //signal in case cons thread is blocked
@@ -128,7 +147,8 @@ void *producer (void *q)
 void *consumer (void *q)
 {
   queue *fifo;
-  // int i;
+  double currWaitingTime;
+  struct timespec endTime;
   //struct workFunction  d;
 
   fifo = (queue *)q;
@@ -139,6 +159,20 @@ void *consumer (void *q)
       // printf ("consumer: queue EMPTY.\n");
       pthread_cond_wait (fifo->notEmpty, fifo->mut);
     }
+
+    gettimeofday(&endTime,NULL);
+    currWaitingTime =endTime.tv_nsec-(startTimes[fifo->head]).tv_nsec;
+    //currWaitingTime =(startTimes[fifo->head]).tv_nsec - endTime.tv_nsec/ 1000000000.0;
+    pthread_mutex_lock (fifo->globalsLock); /// MALLON PERITO TO GLOBALS LOCK TO BLEPQW AYRIO
+
+    //updating global variables that are used for calculating the mean waiting time.
+    functionsCounter++;
+    
+    meanWaitingTime= (meanWaitingTime*(functionsCounter-1) +currWaitingTime ) /functionsCounter ;
+    printf("The waiting time of the current function is : %lf \n",currWaitingTime );
+    printf("The mean waiting time of a function is : %lf \n",meanWaitingTime );
+
+    pthread_mutex_unlock (fifo->globalsLock);
     queueExec (fifo);
     pthread_mutex_unlock (fifo->mut);
     pthread_cond_signal (fifo->notFull);
@@ -161,6 +195,8 @@ queue *queueInit (void)
   q->tail = 0;
   q->mut = (pthread_mutex_t *) malloc (sizeof (pthread_mutex_t));
   pthread_mutex_init (q->mut, NULL);
+  q->globalsLock = (pthread_mutex_t *) malloc (sizeof (pthread_mutex_t));
+  pthread_mutex_init (q->globalsLock, NULL);
   q->notFull = (pthread_cond_t *) malloc (sizeof (pthread_cond_t));
   pthread_cond_init (q->notFull, NULL);
   q->notEmpty = (pthread_cond_t *) malloc (sizeof (pthread_cond_t));
@@ -195,9 +231,13 @@ void queueAdd (queue *q, struct workFunction in)
 
 void queueExec (queue *q)
 {
-  //executing a work function
-  struct workFunction out = q->buf[q->head];
-  (out.work)(out.arg);
+  // //consumer executing a workFunction
+  // struct workFunction out = q->buf[q->head];
+  // (out.work)(out.arg);
+
+  /*consumer executing a workFunction,  (q->buf[q->head]) corresponds to the
+  workFunction element that is going to be executed*/
+  ((q->buf[q->head]).work)((q->buf[q->head]).arg);
 
   q->head++;
   if (q->head == QUEUESIZE)
