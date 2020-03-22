@@ -166,13 +166,19 @@ void *consumer (void *q)
 
     gettimeofday(&endTime,NULL);
     clock_gettime(CLOCK_MONOTONIC, &endTime2);
-    currWaitingTime=endTime.tv_usec-(startTimes[fifo->head]).tv_usec;
-    currWaitingTime2=endTime2.tv_nsec-(startTimes2[fifo->head]).tv_nsec  ;
+
+    //calculating waiting time in microseconds.
+    currWaitingTime= (endTime.tv_sec -(startTimes[fifo->head]).tv_sec) *10e6;
+    currWaitingTime+=endTime.tv_usec-(startTimes[fifo->head]).tv_usec;
+
+    //calculating waiting time in nanoseconds.
+    currWaitingTime2=(endTime2.tv_sec-(startTimes2[fifo->head]).tv_sec) * 10e9  ;
+    currWaitingTime2+=endTime2.tv_nsec-(startTimes2[fifo->head]).tv_nsec  ;
 
     //updating global variables that are used for calculating the mean waiting time.
     functionsCounter++;
 
-    meanWaitingTime= (meanWaitingTime*((double)(functionsCounter-1)) +currWaitingTime )/((double)functionsCounter) ;
+    meanWaitingTime= (meanWaitingTime*((functionsCounter-1)) +currWaitingTime )/(functionsCounter) ;
     printf("\n \nThe waiting time of the current function is : %lf usec\n",currWaitingTime );
     printf("The waiting time of the current function is : %lf nsec\n",currWaitingTime2 );
     printf("The mean waiting time of a function is : %lf \n",meanWaitingTime );
