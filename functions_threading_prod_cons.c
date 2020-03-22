@@ -15,13 +15,14 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h>
+#include <sys/time.h>
 
-#define QUEUESIZE 5
+#define QUEUESIZE 10
 #define LOOP 1000
 #define PI 3.141592654
-#define P 1
-#define Q 1
+#define PRODUCER_REPS 500000
+#define P 4
+#define Q 4
 
 //Given struct for defining the
 struct workFunction {
@@ -51,15 +52,15 @@ int arguments[10]={ 0    , 10   , 25   , 30 ,45  ,
 
 
 //An array to store temporary time data, helpful for the computation of the waiting time.
-struct timespec startTimes[QUEUESIZE] ;
-
+struct timeval startTimes[QUEUESIZE] ;
+struct timespec startTimes2[QUEUESIZE] ;
 
 //Struct defined for the queue implementation
 typedef struct {
   struct workFunction buf[QUEUESIZE];
   long head, tail;
   int full, empty;
-  pthread_mutex_t *mut, * globalsLock;
+  pthread_mutex_t *mut;
   pthread_cond_t *notFull, *notEmpty;
 } queue;
 
@@ -81,7 +82,7 @@ int main ()
 
   fifo = queueInit (); //queue initialization
   if (fifo ==  NULL) {
-    // fprintf (stderr, "main: Queue Init failed.\n");
+    fprintf (stderr, "main: Queue Init failed.\n");
     exit (1);
   }
 
@@ -113,10 +114,11 @@ void *producer (void *q)
 
   fifo = (queue *)q; //casting
 
-  while(1) {
+  for (size_t i = 0; i < PRODUCER_REPS; i++)
+  {
     pthread_mutex_lock (fifo->mut); //locking
     while (fifo->full) {
-      // printf ("producer: queue FULL.\n");
+      printf ("producer: queue FULL.\n");
       pthread_cond_wait (fifo->notFull, fifo->mut); // when recieves the signal, it waits to lock the mut and continue
     }
     //void queueAdd (queue *q, struct workFunction in)
@@ -135,7 +137,8 @@ void *producer (void *q)
     //the function that adds a test function in the queue
     queueAdd (fifo, func);
     // THE BEGINNING of the WAITING TIME
-    gettimeofday(startTimes+(fifo->tail),NULL);
+    gettimeofday(&(startTimes[(fifo->tail)]),NULL);
+    clock_gettime(CLOCK_MONOTONIC, &(startTimes2[(fifo->tail)]));
 
     pthread_mutex_unlock (fifo->mut); //unlocking
     pthread_cond_signal (fifo->notEmpty); //signal in case cons thread is blocked
@@ -147,8 +150,9 @@ void *producer (void *q)
 void *consumer (void *q)
 {
   queue *fifo;
-  double currWaitingTime;
-  struct timespec endTime;
+  double currWaitingTime,currWaitingTime2;
+  struct timeval endTime;
+  struct timespec endTime2;
   //struct workFunction  d;
 
   fifo = (queue *)q;
@@ -156,27 +160,34 @@ void *consumer (void *q)
   while (1) {
     pthread_mutex_lock (fifo->mut);
     while (fifo->empty) {
-      // printf ("consumer: queue EMPTY.\n");
+      printf ("consumer: queue EMPTY.\n");
       pthread_cond_wait (fifo->notEmpty, fifo->mut);
     }
 
     gettimeofday(&endTime,NULL);
-    currWaitingTime =endTime.tv_nsec-(startTimes[fifo->head]).tv_nsec;
-    //currWaitingTime =(startTimes[fifo->head]).tv_nsec - endTime.tv_nsec/ 1000000000.0;
-    pthread_mutex_lock (fifo->globalsLock); /// MALLON PERITO TO GLOBALS LOCK TO BLEPQW AYRIO
+    clock_gettime(CLOCK_MONOTONIC, &endTime2);
+    currWaitingTime=endTime.tv_usec-(startTimes[fifo->head]).tv_usec;
+    currWaitingTime2=endTime2.tv_nsec-(startTimes2[fifo->head]).tv_nsec  ;
 
     //updating global variables that are used for calculating the mean waiting time.
     functionsCounter++;
-    
-    meanWaitingTime= (meanWaitingTime*(functionsCounter-1) +currWaitingTime ) /functionsCounter ;
-    printf("The waiting time of the current function is : %lf \n",currWaitingTime );
-    printf("The mean waiting time of a function is : %lf \n",meanWaitingTime );
 
-    pthread_mutex_unlock (fifo->globalsLock);
+    meanWaitingTime= (meanWaitingTime*((double)(functionsCounter-1)) +currWaitingTime )/((double)functionsCounter) ;
+    printf("\n \nThe waiting time of the current function is : %lf usec\n",currWaitingTime );
+    printf("The waiting time of the current function is : %lf nsec\n",currWaitingTime2 );
+    printf("The mean waiting time of a function is : %lf \n",meanWaitingTime );
+    printf("functionsCounter : %ld \n ",functionsCounter );
+    if(currWaitingTime <0){
+      printf("NEGATIVEEEE WWWAITING = %lf\n",currWaitingTime );
+
+      sleep(5);
+    }
+
+
     queueExec (fifo);
     pthread_mutex_unlock (fifo->mut);
     pthread_cond_signal (fifo->notFull);
-    //printf ("consumer: recieved %d.\n", d);
+    // printf ("consumer: recieved %d.\n", d);
     // usleep(200000);
   }
   return (NULL);
@@ -195,8 +206,6 @@ queue *queueInit (void)
   q->tail = 0;
   q->mut = (pthread_mutex_t *) malloc (sizeof (pthread_mutex_t));
   pthread_mutex_init (q->mut, NULL);
-  q->globalsLock = (pthread_mutex_t *) malloc (sizeof (pthread_mutex_t));
-  pthread_mutex_init (q->globalsLock, NULL);
   q->notFull = (pthread_cond_t *) malloc (sizeof (pthread_cond_t));
   pthread_cond_init (q->notFull, NULL);
   q->notEmpty = (pthread_cond_t *) malloc (sizeof (pthread_cond_t));
