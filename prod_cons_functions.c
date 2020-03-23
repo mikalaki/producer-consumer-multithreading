@@ -17,11 +17,11 @@
 #include <math.h>
 #include <sys/time.h>
 
-#define QUEUESIZE 2
+#define QUEUESIZE 10
 #define PI 3.141592654
 #define PRODUCER_REPS 5000
 #define P 4
-#define Q 4
+#define Q 1
 
 //Given struct for defining the
 struct workFunction {
@@ -73,7 +73,7 @@ void queueExec (queue *q);
 //variable that holds the number of fuction execution by a consumer
 long functionsCounter ;
 double meanWaitingTime;
-
+int terminationStatus;
 int main ()
 {
   queue *fifo; //queue declaration
@@ -82,6 +82,7 @@ int main ()
   //Initializing the two global variables for the mean waiting time calculations equal to zero.
   functionsCounter=0;
   meanWaitingTime=0;
+  terminationStatus=0;
 
   fifo = queueInit (); //queue initialization
   if (fifo ==  NULL) {
@@ -96,10 +97,14 @@ int main ()
   for (size_t i = 0; i < P; i++)
     pthread_create (&producers[i], NULL, producer, fifo);
 
-  for (size_t i = 0; i < Q; i++)
-    pthread_join (consumers[i], NULL);
   for (size_t i = 0; i < P; i++)
     pthread_join (producers[i], NULL);
+
+  terminationStatus=1;
+
+  for (size_t i = 0; i < Q; i++)
+    pthread_join (consumers[i], NULL);
+
 
   queueDelete (fifo);
 
@@ -160,9 +165,12 @@ void *consumer (void *q)
     while (fifo->empty) {
       printf ("consumer: queue EMPTY.\n");
       //Termination condition
-      if(functionsCounter == PRODUCER_REPS * P){
-        printf("All produced functions are executed, programm terminates.");
-        exit(0);
+      if(terminationStatus ==1){
+
+        //Unlock the mutex before termination in order all the producers threads to terminate.
+        pthread_mutex_unlock (fifo->mut);
+        printf("All produced functions are executed, producer's function,unlocks and returns.");
+        return;
       }
       pthread_cond_wait (fifo->notEmpty, fifo->mut);
     }
@@ -182,22 +190,14 @@ void *consumer (void *q)
     ++functionsCounter;
 
     meanWaitingTime= (meanWaitingTime*(functionsCounter-1) + currWaitingTime )/(functionsCounter) ;
-    printf("\n \nThe waiting time of the current function is : %lf usec\n",currWaitingTime );
-    printf("The waiting time of the current function is : %lf nsec\n",currWaitingTime2 );
-    printf("The mean waiting time of a function is : %lf \n",meanWaitingTime );
+    printf("\n \nThe waiting time of the current function is : %lf usec.\n",currWaitingTime );
+    printf("The waiting time of the current function is : %lf nsec.\n",currWaitingTime2 );
+    printf("The mean waiting time of a function is : %lf usec.\n",meanWaitingTime );
     printf("functionsCounter : %ld \n ",functionsCounter );
-    if(currWaitingTime <0){
-      printf("NEGATIVEEEE WWWAITING = %lf\n",currWaitingTime );
-
-
-    }
-
 
     queueExec (fifo);
     pthread_mutex_unlock (fifo->mut);
     pthread_cond_signal (fifo->notFull);
-    // printf ("consumer: recieved %d.\n", d);
-    // usleep(200000);
   }
   return (NULL);
 }
@@ -275,7 +275,8 @@ void * func1(void * arg){
   printf("I am function with i=%d \n", i);
 }
 
-//Definition of the workFuctions that will used in the queue
+//Definition of the workFuctions that will used in the queue.
+//These are just some simple functions that do mathematical computations.
 void * PrintMyNumber(void * arg){
   int number= (int) arg;
   printf("Hello world, I am number is %d !!\n", number);
