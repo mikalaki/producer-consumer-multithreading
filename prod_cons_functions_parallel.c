@@ -68,7 +68,7 @@ queue *queueInit (void);
 void queueDelete (queue *q);
 
 void queueAdd (queue *q, struct workFunction in);
-void queueExec (queue *q);
+void queueExec ( queue *q,struct workFunction  workFunc,int currHead);
 
 //variable that holds the number of fuction execution by a consumer
 long functionsCounter ;
@@ -100,12 +100,8 @@ int main ()
   for (size_t i = 0; i < P; i++)
     pthread_join (producers[i], NULL);
 
-
-
-
-  //pthread_cond_signal (fifo->notEmpty);
-
-  printf("\n\n THE PRODUCERS JOINED  \n\n");
+  //terminationStatus=1;
+  printf("producers joined.");
 
   for (size_t i = 0; i < Q; i++)
     pthread_join (consumers[i], NULL);
@@ -141,7 +137,6 @@ void *producer (void *q)
 
     func.work = functions[funcIndex];
     func.arg = (void *) arguments[argIndex];
-    // THE BEGINNING of the WAITING TIME
 
     //the function that adds a test function in the queue
     queueAdd (fifo, func);
@@ -164,15 +159,15 @@ void *producer (void *q)
 void *consumer (void *q)
 {
   queue *fifo;
-  double currWaitingTime =0;
-  double currWaitingTime2=0;
-  struct timeval endTime;
-  struct timespec endTime2;
-  //struct workFunction  d;
+  struct workFunction execFunc;
+  long currHead;
+
+
 
   fifo = (queue *)q;
 
   while (1) {
+
     pthread_mutex_lock (fifo->mut);
     while (fifo->empty ) {
       printf ("consumer: queue EMPTY.\n");
@@ -189,30 +184,13 @@ void *consumer (void *q)
       pthread_cond_wait (fifo->notEmpty, fifo->mut);
 
     }
+    currHead=fifo->head;
+    execFunc=fifo->buf[currHead];
+    /*consumer executing a workFunction,  (q->buf[q->head]) corresponds to the
+    workFunction element that is going to be executed*/
+    queueExec (fifo,execFunc,currHead);
 
-    gettimeofday(&endTime,NULL);
-    clock_gettime(CLOCK_MONOTONIC, &endTime2);
 
-    //calculating waiting time in microseconds.
-    currWaitingTime= (endTime.tv_sec -(startTimes[fifo->head]).tv_sec) *10e6;
-    currWaitingTime+= (endTime.tv_usec-(startTimes[fifo->head]).tv_usec);
-
-    //calculating waiting time in nanoseconds.
-    currWaitingTime2=(endTime2.tv_sec-(startTimes2[fifo->head]).tv_sec) * 10e9  ;
-    currWaitingTime2+=(endTime2.tv_nsec-(startTimes2[fifo->head]).tv_nsec  );
-
-    //updating global variables that are used for calculating the mean waiting time.
-    ++functionsCounter;
-
-    meanWaitingTime= (meanWaitingTime*(functionsCounter-1) + currWaitingTime )/(functionsCounter) ;
-    printf("\n \nThe waiting time of the current function is : %lf usec.\n",currWaitingTime );
-    printf("The waiting time of the current function is : %lf nsec.\n",currWaitingTime2 );
-    printf("The mean waiting time of a function is : %lf usec.\n",meanWaitingTime );
-    printf("functionsCounter : %ld \n ",functionsCounter );
-
-    queueExec (fifo);
-    pthread_mutex_unlock (fifo->mut);
-    pthread_cond_signal (fifo->notFull);
   }
   return (NULL);
 }
@@ -240,6 +218,7 @@ queue *queueInit (void)
 
 void queueDelete (queue *q)
 {
+  pthread_mutex_destroy (q->mut);
   free (q->mut);
   pthread_cond_destroy (q->notFull);
   free (q->notFull);
@@ -251,10 +230,9 @@ void queueDelete (queue *q)
 void queueAdd (queue *q, struct workFunction in)
 {
   q->buf[q->tail] = in;
-
   // THE BEGINNING of the WAITING TIME is after the workFunction is added in the queue.
-  gettimeofday(&(startTimes[(q->tail)]),NULL);
-  clock_gettime(CLOCK_MONOTONIC, &(startTimes2[(q->tail)]));
+  gettimeofday(&startTimes[q->tail],NULL);
+  clock_gettime(CLOCK_MONOTONIC, &startTimes2[q->tail]);
 
   q->tail++;
   if (q->tail == QUEUESIZE)
@@ -266,12 +244,12 @@ void queueAdd (queue *q, struct workFunction in)
   return;
 }
 
-void queueExec (queue *q)
+void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
 {
-
-  /*consumer executing a workFunction,  (q->buf[q->head]) corresponds to the
-  workFunction element that is going to be executed*/
-  ((q->buf[q->head]).work)((q->buf[q->head]).arg);
+  long currWaitingTime =0 ;
+  long currWaitingTime2=0 ;
+  struct timeval endTime;
+  struct timespec endTime2;
 
   q->head++;
   if (q->head == QUEUESIZE)
@@ -279,15 +257,45 @@ void queueExec (queue *q)
   if (q->head == q->tail)
     q->empty = 1;
   q->full = 0;
+
+
+  //The end of the waiting time , is the moment exactly before the function is executed.
+  gettimeofday(&endTime,NULL);
+  clock_gettime(CLOCK_MONOTONIC, &endTime2);
+
+  //calculating waiting time in microseconds.
+  currWaitingTime= (endTime.tv_sec*1e6 -(startTimes[currHead] ).tv_sec*1e6);
+  currWaitingTime+= (endTime.tv_usec-(startTimes[currHead] ).tv_usec);
+
+  //calculating waiting time in nanoseconds.
+  currWaitingTime2=(endTime2.tv_sec-(startTimes2[currHead ]).tv_sec) * 1e9  ;
+  currWaitingTime2+=(endTime2.tv_nsec-(startTimes2[currHead ]).tv_nsec  );
+
+  //updating global variables that are used for calculating the mean waiting time.
+  ++functionsCounter;
+
+  //Updating the mean waiting time of a function value
+  meanWaitingTime= (meanWaitingTime*(functionsCounter-1) + (double)currWaitingTime )/(functionsCounter) ;
+  printf("\n \nThe waiting time of the current function is : %ld usec.\n",currWaitingTime );
+  printf("The waiting time of the current function is : %ld nsec.\n",currWaitingTime2 );
+  printf("The mean waiting time of a function is : %lf usec.\n",meanWaitingTime );
+  printf("functionsCounter : %ld \n ",functionsCounter );
+
+
+  pthread_mutex_unlock (q->mut);
+  pthread_cond_signal (q->notFull);
+
+  (workFunc.work)((workFunc.arg));
+
   return;
 
 }
 
 //a Work function implementation ( definition)
-void * func1(void * arg){
-  int i = (int) arg;
-  printf("I am function with i=%d \n", i);
-}
+// void * func1(void * arg){
+//   int i = (int) arg;
+// //  printf("I am function with i=%d \n", i);
+// }
 
 //Definition of the workFuctions that will used in the queue.
 //These are just some simple functions that do mathematical computations.
