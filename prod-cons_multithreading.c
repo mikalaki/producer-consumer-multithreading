@@ -1,8 +1,7 @@
 /*
- *	File	: prod-cons_multithreading
- *	Title	: Demo Producer/Consumer.
+ *	File	: prod-cons_multithreading.c
  *
- *	Description	: Modify apthreads solution to the producer consumer problem using
+ *	Description	: Modify a pthreads based solution to the producer consumer problem using
  *  multiple consumer and producer threads, and using thread functions as a FIFO
  *  queue elemnts.
  *
@@ -17,11 +16,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sys/time.h>
+#include "myFunctions.h"
 
-#define QUEUESIZE 10
-#define PI 3.141592654
-#define LOOP 10000
-#define N_OF_FUNCTIONS 5
+#define QUEUESIZE 1000
+#define LOOP 5000
+// #define N_OF_FUNCTIONS 5
 #define N_OF_ARGS 10
 // #define P 4
 // #define Q 4
@@ -40,15 +39,10 @@ struct workFunction {
 void *producer (void *args);
 void *consumer (void *args);
 
-//declaration of the workFuctions that consist the fuctions array
-void * PrintNumber(void * arg);
-void * PrintCos(void * arg);
-void * PrintSin(void * arg);
-void * PrintCosSumSin(void * arg);
-void * PrintSqRoot(void * arg);
+
 
 //Initialization of the workFunctions' fuctions array
-void * (* functions[N_OF_FUNCTIONS])(void *)= {&PrintNumber,&PrintCos ,&PrintSin,&PrintCosSumSin,&PrintSqRoot};
+void * (* functions[N_OF_FUNCTIONS])(void *)= {&PrintNumber,&calcCos ,&calcSin,&calcCosSumSin,&calcSqRoot};
 
 //Initialization of the workFunctions' arguments array
 int arguments[N_OF_ARGS]={ 0    , 10   , 25   , 30 ,45  ,
@@ -139,8 +133,8 @@ int main (int argc, char* argv[])
   textFile=fopen("consolePrints.txt","a");
   //printing to files
   fprintf(dataFile,"%d,%d,%lf\n",P,Q,meanWaitingTime);
-  fprintf(textFile,"For P=%d, and Q=%d ,QUEUESIZE=%d the mean waiting-time is : %lf usec \n ",P,Q,QUEUESIZE,meanWaitingTime,P,Q,meanWaitingTime);
-
+  fprintf(textFile,"For P=%d, and Q=%d ,QUEUESIZE=%d the mean waiting-time is : %lf usec \n ",P,Q,QUEUESIZE,meanWaitingTime);
+  fprintf(textFile,"FunctionsCounter: %ld \n ",functionsCounter);
 
   return 0;
 }
@@ -322,10 +316,7 @@ void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
 
   //Updating the mean waiting time of a function value
   meanWaitingTime= (meanWaitingTime*(functionsCounter-1) + (double)currWaitingTime )/(functionsCounter) ;
-  // printf("\n \nThe waiting time of the current function is : %ld usec.\n",currWaitingTime );
-  // //printf("The waiting time of the current function is : %ld nsec.\n",currWaitingTime2 );
-  // printf("The mean waiting time of a function is : %lf usec.\n",meanWaitingTime );
-  // printf("functionsCounter : %ld \n ",functionsCounter );
+
 
   //Updating Head Value for the next consumer thread,before unlocking the mutex
   q->head++;
@@ -334,7 +325,6 @@ void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
   if (q->head == q->tail)
     q->empty = 1;
   q->full = 0;
-
 
   //Unlocking the mutex
   pthread_mutex_unlock (q->mut);
@@ -346,54 +336,4 @@ void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
 
   return;
 
-}
-
-
-
-//Definition of the workFuctions that will used in the queue.
-//These are just some simple functions that do mathematical computations.
-void * PrintNumber(void * arg){
-  int number= (int) arg;
-  printf("Hello world, the arg number is %d !!\n", number);
-
-}
-
-void * PrintCos(void * arg){
-  int number;
-  float myCos;
-  number= (int) arg;
-  myCos=cos((float)(  (number* PI) / 180) );
-
-
-  printf("The arg number is %d and its cosine is %f ! \n", number,myCos);
-  //usleep(5000);
-}
-
-void * PrintSin(void * arg){
-  int number;
-  float mySin;
-  number= (int) arg;
-  mySin=sin((float)(  (number* PI) / 180) );
-  printf("The arg number is %d and its sine is %f ! \n", number,mySin);
-  //usleep(5000);
-}
-
-void * PrintCosSumSin(void * arg){
-  int number;
-  float mySin;
-  float myCos;
-  number= (int) arg;
-  mySin=sin((float)(  (number* PI) / 180)  );
-  myCos=cos((float)(  (number* PI) / 180)  );
-  printf("The arg number is %d its cosine is %f, its sine is %f and their sum is %f ! \n", number,myCos,mySin, myCos+mySin);
-  //usleep(5000);
-}
-
-void * PrintSqRoot(void * arg){
-  int number;
-  float myRoot;
-  number= (int) arg;
-  myRoot= sqrt((float)number);
-  printf("The arg number is %d and its square root is %f ! \n", number,myRoot);
-  //usleep(5000);
 }
