@@ -2,8 +2,8 @@
  *	File	: prod-cons_multithreading
  *	Title	: Demo Producer/Consumer.
  *
- *	Short	: Modify a	pthreads solution to the producer consumer problem using
- *  multiple consumer and producers threads, and using thread functions as
+ *	Description	: Modify apthreads solution to the producer consumer problem using
+ *  multiple consumer and producer threads, and using thread functions as a FIFO
  *  queue elemnts.
  *
  *	Author : Michael Karatzas
@@ -20,7 +20,7 @@
 
 #define QUEUESIZE 10
 #define PI 3.141592654
-#define LOOP 50000
+#define LOOP 10000
 #define N_OF_FUNCTIONS 5
 #define N_OF_ARGS 10
 // #define P 4
@@ -159,7 +159,7 @@ void *producer (void *q)
     pthread_mutex_lock (fifo->mut);
 
     while (fifo->full) {
-      printf ("producer: queue FULL.\n");
+      //printf ("producer: queue FULL.\n");
       pthread_cond_wait (fifo->notFull, fifo->mut);
     }
 
@@ -208,7 +208,7 @@ void *consumer (void *q)
      and the fifo queue is empty , the termination condition is met and the
      consumer Threads return.*/
     while (fifo->empty ) {
-      printf ("consumer: queue EMPTY.\n");
+      //printf ("consumer: queue EMPTY.\n");
 
       //Termination condition,terminationStatus ==P means that all producers finished adding workFuncs in the queue.
       if(terminationStatus ==P){
@@ -322,10 +322,10 @@ void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
 
   //Updating the mean waiting time of a function value
   meanWaitingTime= (meanWaitingTime*(functionsCounter-1) + (double)currWaitingTime )/(functionsCounter) ;
-  printf("\n \nThe waiting time of the current function is : %ld usec.\n",currWaitingTime );
-  //printf("The waiting time of the current function is : %ld nsec.\n",currWaitingTime2 );
-  printf("The mean waiting time of a function is : %lf usec.\n",meanWaitingTime );
-  printf("functionsCounter : %ld \n ",functionsCounter );
+  // printf("\n \nThe waiting time of the current function is : %ld usec.\n",currWaitingTime );
+  // //printf("The waiting time of the current function is : %ld nsec.\n",currWaitingTime2 );
+  // printf("The mean waiting time of a function is : %lf usec.\n",meanWaitingTime );
+  // printf("functionsCounter : %ld \n ",functionsCounter );
 
   //Updating Head Value for the next consumer thread,before unlocking the mutex
   q->head++;
