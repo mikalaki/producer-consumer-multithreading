@@ -19,7 +19,7 @@
 #include "myFunctions.h"
 
 #define QUEUESIZE 1000
-#define LOOP 5000
+#define LOOP 50000
 // #define N_OF_FUNCTIONS 5
 #define N_OF_ARGS 10
 // #define P 4
