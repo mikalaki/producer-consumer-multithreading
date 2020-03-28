@@ -19,9 +19,14 @@
 
 //Definition of the workFuctions that will used in the queue.
 
-void * PrintNumber(void * arg){
+void * calcPower(void * arg){
   int number= (int) arg;
-  printf("Hello world, the arg number is %d !!\n", number);
+  int power=1;
+  for(int i=1;i<=FUNC_REPS;i++)
+    power=power*number;
+
+
+  //printf("The power is %d !!\n", power);
 
 }
 
@@ -34,7 +39,7 @@ void * calcCos(void * arg){
 
 
   //printf("The arg number is %d and its cosine is %f ! \n", number,myCos);
-  //usleep(5000);
+  // usleep(500);
 }
 
 void * calcSin(void * arg){
@@ -44,7 +49,7 @@ void * calcSin(void * arg){
   for(int i=1;i<=FUNC_REPS;i++)
     mySin=sin((float)(  (i* number* PI) / 180) );
   //printf("The arg number is %d and its sine is %f ! \n", number,mySin);
-  //usleep(5000);
+  // usleep(500);
 }
 
 void * calcCosSumSin(void * arg){
@@ -55,7 +60,7 @@ void * calcCosSumSin(void * arg){
   mySin=sin((float)(  (number* PI) / 180)  );
   myCos=cos((float)(  (number* PI) / 180)  );
   //printf("The arg number is %d its cosine is %f, its sine is %f and their sum is %f ! \n", number,myCos,mySin, myCos+mySin);
-  //usleep(5000);
+  // usleep(500);
 }
 
 void * calcSqRoot(void * arg){
@@ -64,5 +69,5 @@ void * calcSqRoot(void * arg){
   number= (int) arg;
   myRoot= sqrt((float)number);
   //printf("The arg number is %d and its square root is %f ! \n", number,myRoot);
-  //usleep(5000);
+  // usleep(500);
 }

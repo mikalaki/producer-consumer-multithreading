@@ -17,13 +17,13 @@
 
 /* Declaration of the workFuctions that consist the fuctions array*/
 
-//This function prints the integer value of the argument .
-void * PrintNumber(void * arg);
+//This function calculates a power of the arg number by multiplying it with itself.
+void * calcPower(void * arg);
 
-//This function calculates 10 cosines
+//This function calculates 10 cosines staring with the args' one.
 void * calcCos(void * arg);
 
-//This function calculates 10 sines.
+//This function calculates 10 sines staring with the args' one.
 void * calcSin(void * arg);
 
 //This function calculates the sum of argument's sine and cosine and prints it.

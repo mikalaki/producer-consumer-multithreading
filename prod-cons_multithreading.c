@@ -19,7 +19,7 @@
 #include "myFunctions.h"
 
 #define QUEUESIZE 1000
-#define LOOP 50000
+#define LOOP 5000
 // #define N_OF_FUNCTIONS 5
 #define N_OF_ARGS 10
 // #define P 4
@@ -42,7 +42,7 @@ void *consumer (void *args);
 
 
 //Initialization of the workFunctions' fuctions array
-void * (* functions[N_OF_FUNCTIONS])(void *)= {&PrintNumber,&calcCos ,&calcSin,&calcCosSumSin,&calcSqRoot};
+void * (* functions[N_OF_FUNCTIONS])(void *)= {&calcPower,&calcCos ,&calcSin,&calcCosSumSin,&calcSqRoot};
 
 //Initialization of the workFunctions' arguments array
 int arguments[N_OF_ARGS]={ 0    , 10   , 25   , 30 ,45  ,
@@ -134,7 +134,7 @@ int main (int argc, char* argv[])
   //printing to files
   fprintf(dataFile,"%d,%d,%lf\n",P,Q,meanWaitingTime);
   fprintf(textFile,"For P=%d, and Q=%d ,QUEUESIZE=%d the mean waiting-time is : %lf usec \n ",P,Q,QUEUESIZE,meanWaitingTime);
-  fprintf(textFile,"FunctionsCounter: %ld \n ",functionsCounter);
+  //fprintf(textFile,"FunctionsCounter: %ld \n ",functionsCounter);
 
   return 0;
 }
@@ -314,10 +314,6 @@ void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
   //updating global variables that are used for calculating the mean waiting time.
   ++functionsCounter;
 
-  //Updating the mean waiting time of a function value
-  meanWaitingTime= (meanWaitingTime*(functionsCounter-1) + (double)currWaitingTime )/(functionsCounter) ;
-
-
   //Updating Head Value for the next consumer thread,before unlocking the mutex
   q->head++;
   if (q->head == QUEUESIZE)
@@ -325,6 +321,12 @@ void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
   if (q->head == q->tail)
     q->empty = 1;
   q->full = 0;
+
+  //Updating the mean waiting time of a function value
+  meanWaitingTime= (meanWaitingTime*(functionsCounter-1) + (double)currWaitingTime )/(functionsCounter) ;
+
+
+
 
   //Unlocking the mutex
   pthread_mutex_unlock (q->mut);
