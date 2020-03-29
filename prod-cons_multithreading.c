@@ -50,7 +50,7 @@ int arguments[N_OF_ARGS]={ 0    , 10   , 25   , 30 ,45  ,
 
 
 /*The startTimes array, has the same size with the queue.It help us calculate the
-waiting time of a workFunc in the queue.When a new item is stored in a queue position (index),
+waiting time of a workFunction in the queue.When a new item is stored in a queue position (index),
  the time is stored in the same position in the startTimesArray */
 struct timeval startTimes[QUEUESIZE] ;
 
@@ -198,7 +198,7 @@ void *consumer (void *q)
   while (1) {
 
     pthread_mutex_lock (fifo->mut);
-    /*When all the producers finished adding new workFunc items in the queue (terminationStatus==P)
+    /*When all the producers finished adding new workFunction items in the queue (terminationStatus==P)
      and the fifo queue is empty , the termination condition is met and the
      consumer Threads return.*/
     while (fifo->empty ) {
@@ -219,7 +219,7 @@ void *consumer (void *q)
     }
     //variable to store the function the producer thread will execute, after unlocking
     struct workFunction execFunc;
-    //The head value that corresponds to the queue position of the workFunc thread will execute
+    //The head value that corresponds to the queue position of the workFunction thread will execute
     long currHead;
 
     currHead=fifo->head;
@@ -266,10 +266,10 @@ void queueDelete (queue *q)
   free (q);
 }
 
-//Method that adds a new workFunc in the queue
+//Method that adds a new workFunction in the queue
 void queueAdd (queue *q, struct workFunction in)
 {
-  //A new workFunc is added in the queue
+  //A new workFunction is added in the queue
   q->buf[q->tail] = in;
 
   // THE BEGINNING of the WAITING TIME is after the workFunction is added in the queue.
@@ -292,7 +292,7 @@ void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
   long currWaitingTime =0 ;
   //long currWaitingTime2=0 ;
 
-  //variable to get the time that workFunc is getting out of the queue( before execution)
+  //variable to get the time that workFunction is getting out of the queue( before execution)
   struct timeval endTime;
   //struct timespec endTime2;
 
@@ -332,8 +332,8 @@ void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
   pthread_mutex_unlock (q->mut);
   pthread_cond_signal (q->notFull);
 
-  /*Executing the workFunc function after unlocking the mutex , leads to parallel
-  execution of workFunc functions*/
+  /*Executing the workFunction function after unlocking the mutex , leads to parallel
+  execution of workFunction functions*/
   (workFunc.work)((workFunc.arg));
 
   return;
