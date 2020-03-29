@@ -15,9 +15,9 @@ in the terminal , the programm gets compiled and execute for the parameters you 
 
 ## Project Description 
  In this project , we are called to modify a producer-consumer solution that uses pthreads. The original program spawns one producer and one consumer thread , the original programm's code is locate in the prod-cons_default.c file . The purpose is the new program to be executed by **p** producer threads and **q** consumer threads. In the queue , the producer threads will add functions , using the `struct workFunction` in a FIFO queue and the role of the consumers threads is to get this functions and execute them.The `struct workFunction` is defined as : <br> 
-`struct workFunction {
-  void * (*work)(void *);
-  void * arg;  
+`struct workFunction { <br>
+  void * (*work)(void *);<br>
+  void * arg;  <br>
 }`
 
 
