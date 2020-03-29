@@ -42,9 +42,9 @@ struct workFunction {
    **1. For a constant number of producer threads p , as the number of consumers q is rising , the mean waiting number of a function is getting greater, until some point in reaches a small value (about 1.4-2 microseconds) and after by rising the number of consumer q we get some small differences.** <br>
    **2. Bigger QUEUESIZE means , bigger queue  and bigger mean waiting time** <br>
    The conlusion number 1 , can be justified , also by the bellow graphs: <br>
-**graph for QUEUESIZE =10 :**
+**graph for QUEUESIZE =10 :**<br>
 ![graph for queuesize=10](/data/QUEUESIZE10/QUEUESIZE10.bmp)
 <br> 
-**graph for QUEUESIZE =1000 :**
+**graph for QUEUESIZE =1000 :**<br>
 ![graph for queuesize=1000](/data/QUEUESIZE1000/QUEUESIZE1000.bmp)
 
