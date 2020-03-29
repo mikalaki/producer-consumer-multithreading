@@ -30,10 +30,10 @@ struct workFunction {
    Furthermore we are asked to take measurements about the average waiting time of a workFunction item in the FIFO queue ,   and find for what number of consumers **q** , we get the smallest one . 
    ## Measurements 
    Here are the tables with my measurements : <br>
-   **measurements for QUEUESIZE =10 , time is in microseconds (usec) :**
+   **Measurements for QUEUESIZE =10 , time is in microseconds (usec) :**
    ![measurements for queuesize=10](/data/QUEUESIZE10/measurementsQUEUESIZE10.png)
    <br>
-   **measurements for QUEUESIZE =1000 , time is in microseconds (usec) :**
+   **Measurements for QUEUESIZE =1000 , time is in microseconds (usec) :**
    ![measurements for queuesize=1000](/data/QUEUESIZE1000/measurementsQUEUESIZE1000.png)
    <br> 
    
