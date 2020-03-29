@@ -13,4 +13,7 @@ If you want to run the programm for a compination of **p** and **q** values, you
 `bench.sh` <br>
 in the terminal , the programm gets compiled and execute for the parameters you set.
 
+## Project Description 
+<p>  In this pro </p>
+
 
