@@ -10,7 +10,7 @@ after compilation finish you are able to execute the programm with the following
 
 ### Execution Method 2-Benchmarking
 If you want to run the programm for a compination of **p** and **q** values, you can edit the *bench.sh* file and set the p and q values , for which you want to run the programm, in the two for loops . After editing the file , by running :<br>
-`bench.sh` <br>
+`./bench.sh` <br>
 in the terminal , the programm gets compiled and execute for the parameters you set.
 
 ## Project Description 
