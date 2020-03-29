@@ -21,8 +21,8 @@ struct workFunction {
   void * (*work)(void *);
   void * arg;  
 }
-   ```
-<br>
+   ```<br>
+
 
    Furthermore we are asked to take measurements about the average waiting time of a workFunction item in the FIFO queue , and find for what number of consumers **q** , we get the smallest one . Here are the tables with my measurements : 
    **measurements for QUEUESIZE =10 , time is in microseconds (usec) :**
