@@ -40,11 +40,13 @@ struct workFunction {
    ## Conclusion
    The conclusion about the mean waiting time, that  we get for the measurements in the tables above , is that:<br>
    **1. For a constant number of producer threads p , as the number of consumers q is rising , the mean waiting number of a function is getting greater, until some point in reaches a small value (about 1.4-2 microseconds) and after by rising the number of consumer q we get some small differences.** <br>
-   **2. Bigger QUEUESIZE means , bigger queue  and bigger mean waiting time** <br>
+   **2. Bigger QUEUESIZE means bigger queue  and bigger mean waiting time ,as more functions can be in a pending state inside our FIFO queue** <br>
    The conlusion number 1 , can be justified , also by the bellow graphs: <br>
 **Graph for QUEUESIZE =10 :**<br>
 ![graph for queuesize=10](/data/QUEUESIZE10/QUEUESIZE10.bmp)
 <br> 
 **Graph for QUEUESIZE =1000 :**<br>
-![graph for queuesize=1000](/data/QUEUESIZE1000/QUEUESIZE1000.bmp)
+![graph for queuesize=1000](/data/QUEUESIZE1000/QUEUESIZE1000.bmp) 
+<br>
+The above conlcusions and measurements arise from the fact that we used functions in the myFunctions.c file that are not time costly , if we used "heavier functions", the average waiting time would be of course greater , but the conclusions would stay about the same.
 
