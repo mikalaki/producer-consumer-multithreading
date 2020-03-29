@@ -1,5 +1,5 @@
 # producer-consumer-multithreading
-This is repo is about the first assigment on the real-time embedded systems class . We are called to modify a solution of producer consumer problem,which use threads , in order to be able to support multiple producer and multiple consumer threads, and having functions as queue items. 
+This repo is about the first assigment on the real-time embedded systems class . We are called to modify a solution of producer consumer problem,which use threads , in order to be able to support multiple producer and multiple consumer threads, and having functions as queue items. 
 ## Compiling and Execution of the Program
 ### Execution Method 1
 For executing the program you have first to compile it ,by executing the command bellow inside the project folder :<br>
@@ -13,13 +13,21 @@ If you want to run the programm for a compination of **p** and **q** values, you
 `./bench.sh` <br>
 in the terminal , the programm gets compiled and execute for the parameters you set.
 
-## Project Description 
- In this project , we are called to modify a producer-consumer solution that uses pthreads. The original program spawns one producer and one consumer thread , the original programm's code is locate in the prod-cons_default.c file . The purpose is the new program to be executed by **p** producer threads and **q** consumer threads. In the queue , the producer threads will add functions , using the `struct workFunction` in a FIFO queue and the role of the consumers threads is to execute these functions.The `struct workFunction` is defined as : <br> 
+# Project Description 
+ In this project , we are called to modify a producer-consumer solution that uses pthreads. The original program spawns one producer and one consumer thread , the original programm's code is locate in the prod-cons_default.c file . The purpose is the new program to be executed by **p** producer threads and **q** consumer threads. In the queue , the producer threads will add functions , using the `struct workFunction` in a FIFO queue and the role of the consumers threads is to execute these functions in parallel.
+ The `struct workFunction` is defined as : <br> 
 ```
 struct workFunction { 
   void * (*work)(void *);
   void * arg;  
 }
    ```
+<br>
+   Furthermore we are asked to take measurements about the average waiting time of a workFunction item in the FIFO queue , and find for what number of consumers **q** , we get the smallest one . Here are the tables with my measurements : 
+   **measurements for QUEUESIZE =10 , time is in microseconds (usec) :**
+   ![measurements for queuesize=10](https://github.com/mikalaki/producer-consumer-multithreading/blob/master/data/QUEUESIZE10/measurementsQUEUESIZE10.png)
+   **measurements for QUEUESIZE =1000 , time is in microseconds (usec) :**
+   ![measurements for queuesize=1000](https://github.com/mikalaki/producer-consumer-multithreading/blob/master/data/QUEUESIZE1000/measurementsQUEUESIZE1000.png)
+
 
 
