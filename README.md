@@ -48,5 +48,5 @@ struct workFunction {
 **Graph for QUEUESIZE =1000 :**<br>
 ![graph for queuesize=1000](/data/QUEUESIZE1000/QUEUESIZE1000.bmp) 
 <br>
-The above conlcusions and measurements arise from the fact that we used functions in the myFunctions.c file that are not time costly , if we used "heavier functions", the average waiting time would be of course greater , but the conclusions would stay about the same.
+The above conlcusions and measurements arise from the fact that we used functions in the myFunctions.c file that are not time costly , if we used "heavier functions", the average waiting time would be greater ,of course , but the conclusions about the relation between p,q and mean waiting time would stay about the same.
 
