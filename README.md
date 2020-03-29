@@ -14,6 +14,8 @@ If you want to run the programm for a compination of **p** and **q** values, you
 in the terminal , the programm gets compiled and execute for the parameters you set.
 
 # Project Description 
+
+## Goal  
  In this project , we are called to modify a producer-consumer solution that uses pthreads. The original program spawns one producer and one consumer thread , the original programm's code is locate in the prod-cons_default.c file . The purpose is the new program to be executed by **p** producer threads and **q** consumer threads. In the queue , the producer threads will add functions , using the `struct workFunction` in a FIFO queue and the role of the consumers threads is to execute these functions in parallel.
  The `struct workFunction` is defined as : <br> 
 ```
@@ -25,11 +27,23 @@ struct workFunction {
    
    <br>
    
-   Furthermore we are asked to take measurements about the average waiting time of a workFunction item in the FIFO queue ,   and find for what number of consumers **q** , we get the smallest one . Here are the tables with my measurements : <br>
+   Furthermore we are asked to take measurements about the average waiting time of a workFunction item in the FIFO queue ,   and find for what number of consumers **q** , we get the smallest one . 
+   ## Measurements 
+   Here are the tables with my measurements : <br>
    **measurements for QUEUESIZE =10 , time is in microseconds (usec) :**
    ![measurements for queuesize=10](/data/QUEUESIZE10/measurementsQUEUESIZE10.png)
+   <br>
    **measurements for QUEUESIZE =1000 , time is in microseconds (usec) :**
    ![measurements for queuesize=1000](/data/QUEUESIZE1000/measurementsQUEUESIZE1000.png)
-
-
+   <br> 
+   
+   ## Conclusion
+   The conclusion about the mean waiting time, that  we get for the measurements in the tables above , is that:<br>
+   **1. For a constant number of producer threads p , as the number of consumers q is rising , the mean waiting number of a function is getting greater, until some point in reaches a small value (about 1.4-2 microseconds) and after by rising the number of consumer q we get some small differences.** <br>
+   **2. Bigger QUEUESIZE means , bigger queue  and bigger mean waiting time** <br>
+   The conlusion number 1 , can be justified , also by the bellow graphs: <br>
+**graph for QUEUESIZE =10 :**
+![graph for queuesize=10](/data/QUEUESIZE10/QUEUESIZE10.bmp)
+**graph for QUEUESIZE =1000 :**
+![graph for queuesize=1000](/data/QUEUESIZE10/QUEUESIZE1000.bmp)
 
