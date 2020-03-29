@@ -6,10 +6,10 @@
 gcc prod-cons_multithreading.c myFunctions.c -pthread -o program.out -lm -O3
 
 #benching the program
-for P in 1 2 4  8  16 32 64
+for p in 1 2 4  8  16 32 64
 do
-  for Q in 1 2 4  8  16 32 64 128 256
+  for q in 1 2 4  8  16 32 64 128 256
   do
-    ./program.out "$P"  "$Q"
+    ./program.out "$p"  "$q"
   done
 done

@@ -15,18 +15,18 @@
 #include <math.h>
 #include <sys/time.h>
 #include "myFunctions.h"
-#define FUNC_REPS 10
+
 
 //Definition of the workFuctions that will used in the queue.
 
-void * calcPower(void * arg){
+void * calc5thPower(void * arg){
   int number= (int) arg;
-  int power=1;
-  for(int i=1;i<=FUNC_REPS;i++)
+  signed long power=1;
+  for(int i=1;i<=5;i++)
     power=power*number;
 
 
-  //printf("The power is %d !!\n", power);
+  //printf("The arg number is %d and its power is %ld ! \n", number,power);
 
 }
 

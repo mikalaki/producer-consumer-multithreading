@@ -19,7 +19,7 @@
 #include "myFunctions.h"
 
 #define QUEUESIZE 1000
-#define LOOP 5000
+#define LOOP 50000
 // #define N_OF_FUNCTIONS 5
 #define N_OF_ARGS 10
 // #define P 4
@@ -42,7 +42,7 @@ void *consumer (void *args);
 
 
 //Initialization of the workFunctions' fuctions array
-void * (* functions[N_OF_FUNCTIONS])(void *)= {&calcPower,&calcCos ,&calcSin,&calcCosSumSin,&calcSqRoot};
+void * (* functions[N_OF_FUNCTIONS])(void *)= {&calc5thPower,&calcCos ,&calcSin,&calcCosSumSin,&calcSqRoot};
 
 //Initialization of the workFunctions' arguments array
 int arguments[N_OF_ARGS]={ 0    , 10   , 25   , 30 ,45  ,

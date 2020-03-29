@@ -14,11 +14,13 @@
 
 #define PI 3.141592654
 #define N_OF_FUNCTIONS 5
+#define FUNC_REPS 10
 
-/* Declaration of the workFuctions that consist the fuctions array*/
+/* Declaration of the workFuctions that consist the fuctions array, their definition
+is in the myFunctions.c file*/
 
-//This function calculates a power of the arg number by multiplying it with itself.
-void * calcPower(void * arg);
+//This function calculates the 5th power of the arg number by multiplying it with itself.
+void * calc5thPower(void * arg);
 
 //This function calculates 10 cosines staring with the args' one.
 void * calcCos(void * arg);
