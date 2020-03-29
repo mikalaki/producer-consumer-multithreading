@@ -44,6 +44,7 @@ struct workFunction {
    The conlusion number 1 , can be justified , also by the bellow graphs: <br>
 **graph for QUEUESIZE =10 :**
 ![graph for queuesize=10](/data/QUEUESIZE10/QUEUESIZE10.bmp)
+<br> 
 **graph for QUEUESIZE =1000 :**
-![graph for queuesize=1000](/data/QUEUESIZE10/QUEUESIZE1000.bmp)
+![graph for queuesize=1000](/data/QUEUESIZE1000/QUEUESIZE1000.bmp)
 
