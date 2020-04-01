@@ -379,9 +379,10 @@ void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
   //
   // }
 
-  if(currWaitingTime!=0)
+  if(currWaitingTime>=5)
     fprintf(allExecTimes,"%ld\n ",currWaitingTime);
   else
+    //for small waiting times we use nanoseconds precision
     fprintf(allExecTimes, "%lf\n", ((float)currWaitingTime2)/1000);
 
   //updating global variables that are used for calculating the mean waiting time.
