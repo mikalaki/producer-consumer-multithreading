@@ -260,7 +260,7 @@ void *consumer (void *q)
         pthread_mutex_unlock (fifo->mut);
         pthread_cond_signal (fifo->notEmpty);
         //printf("All produced functions are executed, producer's function,unlocks and returns. \n");
-        return;
+        return NULL;
       }
 
       pthread_cond_wait (fifo->notEmpty, fifo->mut);
