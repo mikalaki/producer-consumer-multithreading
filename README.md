@@ -31,10 +31,10 @@ struct workFunction {
    ## Measurements 
    Here are the tables with my measurements : <br>
    **Measurements for QUEUESIZE =10 , time is in microseconds (usec) :**
-   ![measurements for queuesize=10](/data/QUEUESIZE10/measurementsQUEUESIZE10.png)
+   ![measurements for queuesize=10](/stats/QUEUESIZE10/meanWaitingTime10.png)
    <br>
    **Measurements for QUEUESIZE =1000 , time is in microseconds (usec) :**
-   ![measurements for queuesize=1000](/data/QUEUESIZE1000/measurementsQUEUESIZE1000.png)
+   ![measurements for queuesize=1000](/stats/QUEUESIZE1000/meanWaitingTime1000.png)
    <br> 
    
    ## Conclusion
@@ -43,10 +43,10 @@ struct workFunction {
    **2. Bigger QUEUESIZE means bigger queue  and bigger mean waiting time ,as more functions can be in a pending state inside our FIFO queue** <br>
    The conlusion number 1 , can be justified , also by the bellow graphs: <br>
 **Graph for QUEUESIZE =10 :**<br>
-![graph for queuesize=10](/data/QUEUESIZE10/QUEUESIZE10.bmp)
+![graph for queuesize=10](/stats/QUEUESIZE10/graphs/meanWaitingTimeQUEUESIZE10.bmp)
 <br> 
 **Graph for QUEUESIZE =1000 :**<br>
-![graph for queuesize=1000](/data/QUEUESIZE1000/QUEUESIZE1000.bmp) 
+![graph for queuesize=1000](/stats/QUEUESIZE1000/graphs/meanWaitingTimeQUEUESIZE1000.bmp) 
 <br>
 The above conlcusions and measurements arise from the fact that we used functions in the myFunctions.c file that are not time costly , if we used "heavier functions", the average waiting time would be greater ,of course , but the conclusions about the relation between p,q and mean waiting time would stay about the same.
 
