@@ -18,14 +18,17 @@
 #include <sys/time.h>
 #include "myFunctions.h"
 
-#define QUEUESIZE 1000
-#define LOOP 50000
+#define QUEUESIZE 10
+#define LOOP 10000
 // #define N_OF_FUNCTIONS 5
 #define N_OF_ARGS 10
 // #define P 4
 // #define Q 4
 int P; // number of producer Threads
 int Q; // number of consumer Threads
+
+
+FILE *allExecTimes;
 
 //Given struct for defining the workFuction our thread will execute.
 struct workFunction {
@@ -54,7 +57,12 @@ waiting time of a workFunction in the queue.When a new item is stored in a queue
  the time is stored in the same position in the startTimesArray */
 struct timeval startTimes[QUEUESIZE] ;
 
-//struct timespec startTimes2[QUEUESIZE] ; //getting time is nanoseconds
+/*we get also time in nanoconds for bigger precision(nanosecond precision) where the execution time is
+small (for instance 0.8 usec). Generaly we store the measurements from gettimeofday as we are asked,
+but when waiting time is less than 5 microseconds we store the measurement fron clock_gettime
+convereted in microseconds (usec)*/
+struct timespec startTimes2[QUEUESIZE] ; //getting time is nanoseconds
+
 
 //Struct defined for the queue implementation
 typedef struct {
@@ -77,14 +85,35 @@ long functionsCounter ;
 
 //variable that hold the mean waiting-time of a function in the queue
 double meanWaitingTime;
+// long minWaitingTime; // these are computed in matlab
+// long maxWaitingTime;
 
 //variable that helps get the termination condition
 int terminationStatus;
 
 int main (int argc, char* argv[])
 {
+
+
+
   P=atoi(argv[1]);
   Q=atoi(argv[2]);
+
+
+  //Getting results in files
+  //declaring files' pointers
+  FILE  *dataFileMean, *dataFileMax , *dataFileMin , *textFile;
+
+
+  char filename[sizeof "allTimesPXXX_QXXX.csv"];
+
+  //Giving to the file the proper name
+  sprintf(filename, "allTimesP%03d_Q%03d.csv", P,Q);
+
+  //Open the file where all the function waiting times of the current execution are stored
+  allExecTimes = fopen(filename,"a");
+
+
 
   queue *fifo; //queue declaration
   pthread_t producers[P], consumers[Q];//threads declaration
@@ -92,6 +121,12 @@ int main (int argc, char* argv[])
   //Initializing to zero the two global variables for the mean waiting-time calculations .
   functionsCounter=0;
   meanWaitingTime=0;
+
+  // //Initialize max waiting time equal to zero.
+  // maxWaitingTime=0;
+  //
+  // //Initialize min waiting time equal to zero.
+  // minWaitingTime=INFINITY;
 
 
   terminationStatus=0;
@@ -104,37 +139,51 @@ int main (int argc, char* argv[])
 
   /* We first spawn the consumer threads, in order to be able to execute functions
   as soon as queue is not empty , with the help of conds and mutexes*/
-  for (size_t i = 0; i < Q; i++)
+  for (int i = 0; i < Q; i++)
     pthread_create (&consumers[i], NULL, consumer, fifo);
 
   //producers threads spawning
-  for (size_t i = 0; i < P; i++)
+  for (int i = 0; i < P; i++)
     pthread_create (&producers[i], NULL, producer, fifo);
 
   //producers' threads joining
-  for (size_t i = 0; i < P; i++)
+  for (int i = 0; i < P; i++)
     pthread_join (producers[i], NULL);
 
   //consumers' threads joining
-  for (size_t i = 0; i < Q; i++)
+  for (int i = 0; i < Q; i++)
     pthread_join (consumers[i], NULL);
 
   //queue deletion
   queueDelete (fifo);
 
   printf("\nPROGRAMM EXECUTION FINISHED. \n");
+
+  //printf("For P=%d, and Q=%d ,QUEUESIZE=%d the min waiting-time is : %ld nsec \n \n",P,Q,QUEUESIZE,minWaitingTime);
+  // printf("\nFor P=%d, and Q=%d ,QUEUESIZE=%d the min waiting-time is : %f usec \n",P,Q,QUEUESIZE,((float)minWaitingTime )/1000);
+  // printf("For P=%d, and Q=%d ,QUEUESIZE=%d the max waiting-time is : %ld usec  \n",P,Q,QUEUESIZE,maxWaitingTime);
   printf("For P=%d, and Q=%d ,QUEUESIZE=%d the mean waiting-time is : %lf usec \n \n",P,Q,QUEUESIZE,meanWaitingTime);
 
-  //Getting results in files
-  //declaring files' pointers
-  FILE *dataFile , *textFile;
-  //open the files
-  dataFile=fopen("data.csv","a");
+
+  //open the files that store mean , min and max waiting time of all executions
+  dataFileMean=fopen("dataΜΕΑΝ.csv","a");
+  // dataFileMin=fopen("dataMIN.csv","a");
+  // dataFileMax=fopen("dataMAX.csv","a");
   textFile=fopen("consolePrints.txt","a");
-  //printing to files
-  fprintf(dataFile,"%d,%d,%lf\n",P,Q,meanWaitingTime);
-  fprintf(textFile,"For P=%d, and Q=%d ,QUEUESIZE=%d the mean waiting-time is : %lf usec \n ",P,Q,QUEUESIZE,meanWaitingTime);
-  //fprintf(textFile,"FunctionsCounter: %ld \n ",functionsCounter);
+
+  //printing to files the mean , min and max waiting time of the executions
+  fprintf(dataFileMean,"%d,%d,%lf\n",P,Q,meanWaitingTime);
+  // fprintf(dataFileMin,"%d,%d,%lf\n",P,Q,((float)minWaitingTime )/1000);
+  // fprintf(dataFileMax,"%d,%d,%ld\n",P,Q,maxWaitingTime);
+
+
+  fprintf(textFile,"\nFor P=%d, and Q=%d ,QUEUESIZE=%d the mean waiting-time is : %lf usec \n ",P,Q,QUEUESIZE,meanWaitingTime);
+  // fprintf(textFile,"For P=%d, and Q=%d ,QUEUESIZE=%d the min waiting-time is : %f usec \n ",P,Q,QUEUESIZE,((float)minWaitingTime )/1000);
+  // fprintf(textFile,"For P=%d, and Q=%d ,QUEUESIZE=%d the max waiting-time is : %ld usec \n \n",P,Q,QUEUESIZE,maxWaitingTime);
+
+
+  fclose(allExecTimes);
+  fprintf(textFile,"FunctionsCounter: %ld \n ",functionsCounter);
 
   return 0;
 }
@@ -148,7 +197,7 @@ void *producer (void *q)
   fifo = (queue *)q;
 
   //producers' loop
-  for (size_t i = 0; i < LOOP; i++)
+  for (int i = 0; i < LOOP; i++)
   {
     pthread_mutex_lock (fifo->mut);
 
@@ -274,7 +323,7 @@ void queueAdd (queue *q, struct workFunction in)
 
   // THE BEGINNING of the WAITING TIME is after the workFunction is added in the queue.
   gettimeofday(&startTimes[q->tail],NULL);
-  //clock_gettime(CLOCK_MONOTONIC, &startTimes2[q->tail]);
+  clock_gettime(CLOCK_MONOTONIC, &startTimes2[q->tail]);
 
   q->tail++;
   if (q->tail == QUEUESIZE)
@@ -288,31 +337,56 @@ void queueAdd (queue *q, struct workFunction in)
 
 void queueExec ( queue *q,struct workFunction  workFunc,int currHead)
 {
+
+
+  ////TIME CALCULATIONS/////
   //variable to store the waiting time of the current workFunc
   long currWaitingTime =0 ;
-  //long currWaitingTime2=0 ;
+  long currWaitingTime2=0 ;
 
   //variable to get the time that workFunction is getting out of the queue( before execution)
   struct timeval endTime;
-  //struct timespec endTime2;
+  struct timespec endTime2;
 
 
 
 
   //The END of the waiting time , is the moment exactly before the function is executed.
   gettimeofday(&endTime,NULL);
-  //clock_gettime(CLOCK_MONOTONIC, &endTime2);
+  clock_gettime(CLOCK_MONOTONIC, &endTime2);
 
   //calculating waiting time in microseconds.
   currWaitingTime= (endTime.tv_sec*1e6 -(startTimes[currHead] ).tv_sec*1e6);
   currWaitingTime+= (endTime.tv_usec-(startTimes[currHead] ).tv_usec);
 
-  // //calculating waiting time in nanoseconds.
-  // currWaitingTime2=(endTime2.tv_sec-(startTimes2[currHead ]).tv_sec) * 1e9  ;
-  // currWaitingTime2+=(endTime2.tv_nsec-(startTimes2[currHead ]).tv_nsec  );
+
+
+
+  //calculating waiting time in nanoseconds.
+  currWaitingTime2=(endTime2.tv_sec-(startTimes2[currHead ]).tv_sec) * 1e9  ;
+  currWaitingTime2+=(endTime2.tv_nsec-(startTimes2[currHead ]).tv_nsec  );
+
+
+  // //Check if the current waiting time is the min waiting time.
+  // if(currWaitingTime2 < minWaitingTime){
+  //   minWaitingTime=currWaitingTime2;
+  //
+  // }
+  //
+  // //Check if the current waiting time is the max waiting time.
+  // if(currWaitingTime > maxWaitingTime){
+  //   maxWaitingTime=currWaitingTime;
+  //
+  // }
+
+  if(currWaitingTime!=0)
+    fprintf(allExecTimes,"%ld\n ",currWaitingTime);
+  else
+    fprintf(allExecTimes, "%lf\n", ((float)currWaitingTime2)/1000);
 
   //updating global variables that are used for calculating the mean waiting time.
   ++functionsCounter;
+
 
   //Updating Head Value for the next consumer thread,before unlocking the mutex
   q->head++;

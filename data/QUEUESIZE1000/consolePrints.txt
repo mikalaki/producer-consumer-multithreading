@@ -1,64 +1,190 @@
-For P=1, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 1068.804520 usec 
- For P=1, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 351.719600 usec 
- For P=1, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 1.959620 usec 
- For P=1, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 1.563940 usec 
- For P=1, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 1.475180 usec 
- For P=1, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 1.441060 usec 
- For P=1, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 1.528140 usec 
- For P=1, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 1.437980 usec 
- For P=1, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 1.429720 usec 
- For P=2, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 1650.722790 usec 
- For P=2, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 271.886960 usec 
- For P=2, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 2.646720 usec 
- For P=2, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 1.610150 usec 
- For P=2, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 1.598280 usec 
- For P=2, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 1.570430 usec 
- For P=2, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 1.567030 usec 
- For P=2, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 1.564670 usec 
- For P=2, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 1.530950 usec 
- For P=4, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 3583.210050 usec 
- For P=4, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 2291.271770 usec 
- For P=4, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 14.714340 usec 
- For P=4, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 1.838900 usec 
- For P=4, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 1.900670 usec 
- For P=4, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 1.825220 usec 
- For P=4, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 1.781970 usec 
- For P=4, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 1.793530 usec 
- For P=4, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 1.746450 usec 
- For P=8, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 3175.765070 usec 
- For P=8, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 3285.484695 usec 
- For P=8, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 3515.961798 usec 
- For P=8, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 3.021867 usec 
- For P=8, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 2.077135 usec 
- For P=8, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 1.991900 usec 
- For P=8, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 2.032303 usec 
- For P=8, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 2.058618 usec 
- For P=8, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 2.080370 usec 
- For P=16, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 3017.810994 usec 
- For P=16, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 2849.887624 usec 
- For P=16, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 3013.274706 usec 
- For P=16, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 2921.758655 usec 
- For P=16, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 2.537032 usec 
- For P=16, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 2.043390 usec 
- For P=16, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 2.164917 usec 
- For P=16, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 2.237726 usec 
- For P=16, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 2.304903 usec 
- For P=32, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 2936.610135 usec 
- For P=32, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 2606.420977 usec 
- For P=32, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 2606.372823 usec 
- For P=32, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 1791.290958 usec 
- For P=32, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 1560.450052 usec 
- For P=32, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 12.749311 usec 
- For P=32, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 1.276314 usec 
- For P=32, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 1.398934 usec 
- For P=32, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 1.541170 usec 
- For P=64, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 1728.813416 usec 
- For P=64, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 1468.408027 usec 
- For P=64, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 1441.347032 usec 
- For P=64, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 1461.400874 usec 
- For P=64, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 1453.131024 usec 
- For P=64, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 1468.307739 usec 
- For P=64, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 1.929646 usec 
- For P=64, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 1.366445 usec 
- For P=64, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 1.516077 usec 
+
+For P=1, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 107.227700 usec 
+ FunctionsCounter: 10000 
+ 
+For P=1, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 682.415700 usec 
+ FunctionsCounter: 10000 
+ 
+For P=1, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 4.530100 usec 
+ FunctionsCounter: 10000 
+ 
+For P=1, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 2.059700 usec 
+ FunctionsCounter: 10000 
+ 
+For P=1, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 1.900000 usec 
+ FunctionsCounter: 10000 
+ 
+For P=1, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 1.868600 usec 
+ FunctionsCounter: 10000 
+ 
+For P=1, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 1.843100 usec 
+ FunctionsCounter: 10000 
+ 
+For P=1, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 1.925000 usec 
+ FunctionsCounter: 10000 
+ 
+For P=1, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 1.973600 usec 
+ FunctionsCounter: 10000 
+ 
+For P=2, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 3230.504550 usec 
+ FunctionsCounter: 20000 
+ 
+For P=2, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 1464.025950 usec 
+ FunctionsCounter: 20000 
+ 
+For P=2, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 16.868400 usec 
+ FunctionsCounter: 20000 
+ 
+For P=2, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 2.204250 usec 
+ FunctionsCounter: 20000 
+ 
+For P=2, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 1.935950 usec 
+ FunctionsCounter: 20000 
+ 
+For P=2, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 2.214400 usec 
+ FunctionsCounter: 20000 
+ 
+For P=2, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 1.813900 usec 
+ FunctionsCounter: 20000 
+ 
+For P=2, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 2.169700 usec 
+ FunctionsCounter: 20000 
+ 
+For P=2, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 2.139700 usec 
+ FunctionsCounter: 20000 
+ 
+For P=4, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 3997.201025 usec 
+ FunctionsCounter: 40000 
+ 
+For P=4, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 3654.780050 usec 
+ FunctionsCounter: 40000 
+ 
+For P=4, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 2120.542575 usec 
+ FunctionsCounter: 40000 
+ 
+For P=4, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 4.189725 usec 
+ FunctionsCounter: 40000 
+ 
+For P=4, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 2.698800 usec 
+ FunctionsCounter: 40000 
+ 
+For P=4, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 2.700300 usec 
+ FunctionsCounter: 40000 
+ 
+For P=4, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 2.701550 usec 
+ FunctionsCounter: 40000 
+ 
+For P=4, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 2.706050 usec 
+ FunctionsCounter: 40000 
+ 
+For P=4, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 2.900675 usec 
+ FunctionsCounter: 40000 
+ 
+For P=8, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 3909.870612 usec 
+ FunctionsCounter: 80000 
+ 
+For P=8, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 4726.560925 usec 
+ FunctionsCounter: 80000 
+ 
+For P=8, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 4603.473662 usec 
+ FunctionsCounter: 80000 
+ 
+For P=8, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 3086.119287 usec 
+ FunctionsCounter: 80000 
+ 
+For P=8, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 3.109575 usec 
+ FunctionsCounter: 80000 
+ 
+For P=8, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 3.206413 usec 
+ FunctionsCounter: 80000 
+ 
+For P=8, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 3.550662 usec 
+ FunctionsCounter: 80000 
+ 
+For P=8, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 3.777975 usec 
+ FunctionsCounter: 80000 
+ 
+For P=8, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 3.609900 usec 
+ FunctionsCounter: 80000 
+ 
+For P=16, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 3604.914231 usec 
+ FunctionsCounter: 160000 
+ 
+For P=16, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 3677.429063 usec 
+ FunctionsCounter: 160000 
+ 
+For P=16, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 4003.022188 usec 
+ FunctionsCounter: 160000 
+ 
+For P=16, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 3688.100131 usec 
+ FunctionsCounter: 160000 
+ 
+For P=16, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 2958.494569 usec 
+ FunctionsCounter: 160000 
+ 
+For P=16, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 3.395269 usec 
+ FunctionsCounter: 160000 
+ 
+For P=16, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 4.213156 usec 
+ FunctionsCounter: 160000 
+ 
+For P=16, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 4.810450 usec 
+ FunctionsCounter: 160000 
+ 
+For P=16, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 4.891150 usec 
+ FunctionsCounter: 160000 
+ 
+For P=32, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 3374.089662 usec 
+ FunctionsCounter: 320000 
+ 
+For P=32, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 3394.414659 usec 
+ FunctionsCounter: 320000 
+ 
+For P=32, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 3493.079784 usec 
+ FunctionsCounter: 320000 
+ 
+For P=32, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 3803.285994 usec 
+ FunctionsCounter: 320000 
+ 
+For P=32, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 3858.887866 usec 
+ FunctionsCounter: 320000 
+ 
+For P=32, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 2856.639238 usec 
+ FunctionsCounter: 320000 
+ 
+For P=32, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 3.125606 usec 
+ FunctionsCounter: 320000 
+ 
+For P=32, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 4.593012 usec 
+ FunctionsCounter: 320000 
+ 
+For P=32, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 6.368694 usec 
+ FunctionsCounter: 320000 
+ 
+For P=64, and Q=1 ,QUEUESIZE=1000 the mean waiting-time is : 3349.608344 usec 
+ FunctionsCounter: 640000 
+ 
+For P=64, and Q=2 ,QUEUESIZE=1000 the mean waiting-time is : 3373.243467 usec 
+ FunctionsCounter: 640000 
+ 
+For P=64, and Q=4 ,QUEUESIZE=1000 the mean waiting-time is : 3679.007422 usec 
+ FunctionsCounter: 640000 
+ 
+For P=64, and Q=8 ,QUEUESIZE=1000 the mean waiting-time is : 4137.892095 usec 
+ FunctionsCounter: 640000 
+ 
+For P=64, and Q=16 ,QUEUESIZE=1000 the mean waiting-time is : 3930.922108 usec 
+ FunctionsCounter: 640000 
+ 
+For P=64, and Q=32 ,QUEUESIZE=1000 the mean waiting-time is : 3526.685667 usec 
+ FunctionsCounter: 640000 
+ 
+For P=64, and Q=64 ,QUEUESIZE=1000 the mean waiting-time is : 1846.572122 usec 
+ FunctionsCounter: 640000 
+ 
+For P=64, and Q=128 ,QUEUESIZE=1000 the mean waiting-time is : 3.504628 usec 
+ FunctionsCounter: 640000 
+ 
+For P=64, and Q=256 ,QUEUESIZE=1000 the mean waiting-time is : 7.594900 usec 
+ FunctionsCounter: 640000 
  
