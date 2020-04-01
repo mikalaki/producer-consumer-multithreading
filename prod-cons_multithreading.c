@@ -18,7 +18,7 @@
 #include <sys/time.h>
 #include "myFunctions.h"
 
-#define QUEUESIZE 10
+#define QUEUESIZE 1000
 #define LOOP 10000
 // #define N_OF_FUNCTIONS 5
 #define N_OF_ARGS 10
