@@ -16,8 +16,7 @@ in the terminal , the programm gets compiled and execute for the parameters you 
 
 # Project Description,<br>
 **(!!!BELLOW IS NOT THE REPORT FOR THE UNIVERSITY ASSIGMENT, just a rοugh symmary in English!!!)**<br>
-**(!!!BELLOW IS NOT THE REPORT FOR THE UNIVERSITY ASSIGMENT, just a rοugh symmary in English!!!)**<br>
-**The report isthe report.pdf and is uploaded also on elarning platform**
+**The report in the repo is the !report.pdf(report.pdf) and is uploaded also on elarning platform**
 ## Goal  
  In this project , we are called to modify a producer-consumer solution that uses pthreads. The original program spawns one producer and one consumer thread , the original programm's code is locate in the prod-cons_default.c file . The purpose is the new program to be executed by **p** producer threads and **q** consumer threads. In the queue , the producer threads will add functions , using the `struct workFunction` in a FIFO queue and the role of the consumers threads is to execute these functions in parallel.
  The `struct workFunction` is defined as : <br> 
